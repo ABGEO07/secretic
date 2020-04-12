@@ -2,6 +2,7 @@ package dev.abgeo.secretic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +20,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
+    private final String rememberMeKey;
+
     @Autowired
-    public WebSecurityConfig(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(
+            @Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService,
+            @Value("${spring.user.remember-me-key}") String rememberMeKey
+    ) {
         this.userDetailsService = userDetailsService;
+        this.rememberMeKey = rememberMeKey;
     }
 
     @Bean
@@ -42,7 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .permitAll();
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
+                .rememberMe().key(rememberMeKey);
     }
 
     @Bean
