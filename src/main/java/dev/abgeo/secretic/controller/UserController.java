@@ -5,6 +5,9 @@ import dev.abgeo.secretic.service.SecurityService;
 import dev.abgeo.secretic.service.UserService;
 import dev.abgeo.secretic.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
     private final SecurityService securityService;
+
     private final UserValidator userValidator;
 
     @Autowired
@@ -47,6 +52,11 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/";
+        }
+
         if (error != null) {
             model.addAttribute("error", "მომხმარებლის სახელი ან პაროლი არასწორია!");
         }
