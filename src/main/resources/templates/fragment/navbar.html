@@ -20,7 +20,7 @@
                     <span sec:authentication="name" th:remove="tag"></span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarUserMenu">
-                    <a class="dropdown-item" th:href="@{/logout}">გასვლა</a>
+                    <a class="dropdown-item text-danger" th:href="@{/logout}">გასვლა</a>
                 </div>
             </li>
             <li class="nav-item" th:classappend="${currentUri == '/login'} ? 'active' : null"

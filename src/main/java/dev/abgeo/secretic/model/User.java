@@ -22,10 +22,6 @@ public class User {
     @ManyToMany
     private Set<Role> roles;
 
-    public User() {
-        roles = new HashSet<>();
-    }
-
     public Long getId() {
         return id;
     }

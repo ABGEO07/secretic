@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org">
 <head>
     <title>მთავარი</title>
 </head>
@@ -15,7 +15,8 @@
             <h1 class="slide-in text-secondary">Secret!c</h1>
             <p class="slide-in">ანონიმური შეტყობინებების სისტემა</p>
             <div class="action-links slide-in">
-                <a th:href="@{/registration}" class="btn btn-primary btn-pill align-self-center mr-2">
+                <a th:href="@{/registration}" sec:authorize="!isAuthenticated()"
+                   class="btn btn-primary btn-pill align-self-center mr-2">
                     <i class="fa fa-user-plus mr-1"></i> შემოგვიერთდი
                 </a>
                 <a href="#" class="btn btn-outline-light btn-pill align-self-center">გაიგე მეტი</a>

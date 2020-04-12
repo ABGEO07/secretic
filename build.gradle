@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.flywaydb.flyway' version '6.2.3'
     id 'java'
 }
 
@@ -20,6 +21,7 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'javax.servlet:jstl'
+    implementation 'org.flywaydb:flyway-core'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -28,4 +30,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+def props = new Properties()
+file('src/main/resources/application.properties').withInputStream { props.load(it) }
+
+flyway {
+    url = props.getProperty('spring.datasource.url')
+    user = props.getProperty('spring.datasource.username')
+    password = props.getProperty('spring.datasource.password')
+    locations = [
+            'filesystem:src/main/resources/db/migration'
+    ]
 }
