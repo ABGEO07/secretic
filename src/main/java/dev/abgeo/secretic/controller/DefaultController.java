@@ -1,4 +1,4 @@
-package dev.abgeo.secretic.Controller;
+package dev.abgeo.secretic.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

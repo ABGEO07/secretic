@@ -6,13 +6,16 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="loader">
+        <div class="page-loader"></div>
+    </div>
     <img th:src="@{assets/images/logo.png}" alt="Secretic" class="logo">
     <div class="welcome d-flex justify-content-center flex-column">
         <div class="inner-wrapper mt-auto mb-auto">
             <h1 class="slide-in text-secondary">Secret!c</h1>
             <p class="slide-in">ანონიმური შეტყობინებების სისტემა</p>
             <div class="action-links slide-in">
-                <a href="#" class="btn btn-primary btn-pill align-self-center mr-2">
+                <a th:href="@{/registration}" class="btn btn-primary btn-pill align-self-center mr-2">
                     <i class="fa fa-user-plus mr-1"></i> შემოგვიერთდი
                 </a>
                 <a href="#" class="btn btn-outline-light btn-pill align-self-center">გაიგე მეტი</a>

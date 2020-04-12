@@ -7,17 +7,17 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="Anonymous messaging system">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" th:href="@{favicon.ico}" type="image/x-icon" />
     <link rel="stylesheet" th:href="@{assets/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{assets/css/font-awesome.min.css}">
     <link rel="stylesheet" th:href="@{assets/css/shards.min.css}">
     <link rel="stylesheet" th:href="@{assets/css/style.css}">
 </head>
 <body>
-<div class="loader">
-    <div class="page-loader"></div>
-</div>
-
 <div class="page-content">
+    <nav th:replace="fragment/navbar :: navbar">
+        <p>Navbar Contents</p>
+    </nav>
     <div class="content clearfix" layout:fragment="content">
         <p>Body contents</p>
     </div>
