@@ -20,6 +20,9 @@
                     <span sec:authentication="name" th:remove="tag"></span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarUserMenu">
+                    <a class="dropdown-item" href="#">ჩემი პროფილი</a>
+                    <a class="dropdown-item" th:classappend="${currentUri == '/edit-profile'} ? 'active' : null"
+                       th:href="@{/edit-profile}">პროფილის რედაქტირება</a>
                     <a class="dropdown-item text-danger" th:href="@{/logout}">გასვლა</a>
                 </div>
             </li>

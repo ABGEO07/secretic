@@ -1,14 +1,7 @@
-package dev.abgeo.secretic.model;
+package dev.abgeo.secretic.form;
 
-import javax.persistence.*;
-import java.util.Set;
+public class UserForm {
 
-@Entity
-@Table(name = "user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -19,8 +12,11 @@ public class User {
 
     private String password;
 
-    @ManyToMany
-    private Set<Role> roles;
+    private String passwordOld;
+
+    private String passwordConfirm;
+
+    private boolean agreedWithTerms;
 
     public Long getId() {
         return id;
@@ -62,24 +58,28 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public String getPasswordOld() {
+        return passwordOld;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setPasswordOld(String passwordOld) {
+        this.passwordOld = passwordOld;
     }
 
-    @Override
-    public Object clone() {
-        User user = new User();
-        user.setId(this.id);
-        user.setUsername(this.username);
-        user.setPassword(this.password);
-        user.setFirstName(this.firstName);
-        user.setLastName(this.lastName);
-        user.setRoles(this.roles);
-
-        return user;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
     }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public boolean isAgreedWithTerms() {
+        return agreedWithTerms;
+    }
+
+    public void setAgreedWithTerms(boolean agreedWithTerms) {
+        this.agreedWithTerms = agreedWithTerms;
+    }
+
 }

@@ -1,89 +1,76 @@
 package dev.abgeo.secretic.controller;
 
-import dev.abgeo.secretic.model.Role;
+import dev.abgeo.secretic.form.UserForm;
 import dev.abgeo.secretic.model.User;
-import dev.abgeo.secretic.repository.RoleRepository;
-import dev.abgeo.secretic.service.SecurityService;
 import dev.abgeo.secretic.service.UserService;
-import dev.abgeo.secretic.validator.UserValidator;
+import dev.abgeo.secretic.validator.UserFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
 
-    private final SecurityService securityService;
-
-    private final UserValidator userValidator;
-
-    private final RoleRepository roleRepository;
+    private final UserFormValidator userFormValidator;
 
     @Autowired
-    public UserController(
-            UserService userService,
-            SecurityService securityService,
-            UserValidator userValidator,
-            RoleRepository roleRepository
-    ) {
+    public UserController(UserService userService, UserFormValidator userFormValidator) {
         this.userService = userService;
-        this.securityService = securityService;
-        this.userValidator = userValidator;
-        this.roleRepository = roleRepository;
+        this.userFormValidator = userFormValidator;
+    }
+    
+    @GetMapping("/edit-profile")
+    public String editProfile(Model model, UserForm userForm, Authentication authentication) {
+        User user = userService.findByUsername(authentication.getName());
+
+        userForm.setFirstName(user.getFirstName());
+        userForm.setLastName(user.getLastName());
+
+        model.addAttribute("userForm", userForm);
+
+        return "user/edit-profile";
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model, User user) {
-        model.addAttribute("user", user);
+    @PostMapping("/edit-profile")
+    public String EditProfile(
+            @ModelAttribute("userForm") UserForm userForm,
+            Model model,
+            BindingResult bindingResult,
+            Authentication authentication
+    ) {
+        User userFromDb = userService.findByUsername(authentication.getName());
+        User userFromDbClone = (User) userFromDb.clone();
+        // Hack for avoid referenced value change (THIS IS JAVAAA!!!).
+        // TODO: Find more semantic and elegant way.
 
-        return "user/registration";
-    }
-
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "user/registration";
+        userForm.setId(userFromDbClone.getId());
+        userForm.setUsername(authentication.getName());
+        if (null == userForm.getPasswordOld() || userForm.getPasswordOld().isEmpty() || userForm.getPasswordOld().isBlank()) {
+            userForm.setPasswordOld(null);
+            userForm.setPassword(userFromDbClone.getPassword());
+            userForm.setPasswordConfirm(userFromDbClone.getPassword());
         }
 
-        // Set user role to ROLE_USER.
-        Set<Role> userRoles = new HashSet<>();
-        userRoles.add(roleRepository.findByName("ROLE_USER"));
-        user.setRoles(userRoles);
+        userFormValidator.validate(userForm, bindingResult);
 
-        userService.save(user);
-        securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+        if (!bindingResult.hasErrors()) {
+            userFromDbClone.setFirstName(userForm.getFirstName());
+            userFromDbClone.setLastName(userForm.getLastName());
+            userFromDbClone.setPassword(userForm.getPassword());
 
-        return "redirect:/";
-    }
+            userService.save(userFromDbClone);
 
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/";
+            model.addAttribute("updatedSuccessfully", true);
         }
 
-        if (error != null) {
-            model.addAttribute("error", "მომხმარებლის სახელი ან პაროლი არასწორია!");
-        }
-
-        if (logout != null) {
-            model.addAttribute("message", "თქვენ წარმატებით გახვედით სისტემიდან.");
-        }
-
-        return "user/login";
+        return "user/edit-profile";
     }
 
 }

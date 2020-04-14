@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>პროფილის რედაქტირება</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+                <form autocomplete="off" th:action="@{/edit-profile}" th:object="${userForm}"
+                      th:classappend="${#fields.hasErrors()} ? 'was-validated' : null" method="post">
+                    <div class="col-12">
+                        <h3 class="form-text text-center">პროფილის რედაქტირება</h3>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert"
+                             th:if="${updatedSuccessfully == true}">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <i class="fa fa-check"></i>
+                            თქვენი პროფილი წარმატებით განახლდა.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="input-group input-group-seamless">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </span>
+                            <input type="text" th:field="*{firstName}" class="form-control"
+                                   placeholder="სახელი"
+                                   th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : null"/>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                                 th:errors="*{firstName}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="input-group input-group-seamless">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </span>
+                            <input type="text" th:field="*{lastName}" class="form-control"
+                                   placeholder="გვარი"
+                                   th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : null"/>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}"
+                                 th:errors="*{lastName}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <a data-toggle="collapse" href="#passwordCollapse" role="button"
+                           aria-expanded="false" aria-controls="passwordCollapse">
+                            პაროლის შეცვლა
+                        </a>
+                        <div class="collapse" id="passwordCollapse"
+                             th:classappend="${#fields.hasErrors()} ? 'show' : null">
+                            <div class="card card-body">
+                                <div class="form-group col-md-12">
+                                    <div class="input-group input-group-seamless">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </span>
+                                        <input type="password" th:field="*{passwordOld}" class="form-control"
+                                               placeholder="ძველი პაროლი"
+                                               th:classappend="${#fields.hasErrors('passwordOld')} ? 'is-invalid' : null"
+                                               th:attrappend="required=${#fields.hasErrors()} ? 'required' : null"/>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordOld')}"
+                                             th:errors="*{passwordOld}"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <div class="input-group input-group-seamless">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </span>
+                                        <input type="password" th:field="*{password}" class="form-control"
+                                               placeholder="ახალი პაროლი"
+                                               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : null"
+                                               th:attrappend="required=${#fields.hasErrors()} ? 'required' : null"/>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                                             th:errors="*{password}"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <div class="input-group input-group-seamless">
+                                        <span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </span>
+                                        <input type="password" th:field="*{passwordConfirm}" class="form-control"
+                                               placeholder="გაიმეორეთ პაროლი"
+                                               th:classappend="${#fields.hasErrors('passwordConfirm')} ? 'is-invalid' : null"
+                                               th:attrappend="required=${#fields.hasErrors()} ? 'required' : null"/>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}"
+                                             th:errors="*{passwordConfirm}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-primary block">რედაქტირება</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

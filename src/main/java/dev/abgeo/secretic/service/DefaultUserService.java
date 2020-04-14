@@ -21,7 +21,12 @@ public class DefaultUserService implements UserService {
 
     @Override
     public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        User userFromDatabase = userRepository.findByUsername(user.getUsername());
+
+        if (null == userFromDatabase || !userFromDatabase.getPassword().equals(user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
+
         userRepository.save(user);
     }
 
