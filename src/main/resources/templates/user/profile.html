@@ -2,7 +2,7 @@
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="${user.username}"></title>
+    <title th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/profile.css}">
 </head>
 <body>
@@ -13,14 +13,23 @@
                 <h1 class="text-center" ></h1>
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-center card-title" th:text="${user.username}"></h3>
+                        <div class="col-md-12 clearfix">
+                            <h1 class="text-center card-title h3"
+                                th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></h1>
+
+                            <a class="btn btn-sm btn-outline-primary btn-edit-profile"
+                               data-original-title="პროფილის რედაქტირება" data-toggle="tooltip"
+                               th:if="${user.username} == ${#authentication.name}" th:href="@{/edit-profile}">
+                                <i class="fa fa-edit mt-2 mb-2"></i>
+                            </a>
+                        </div>
 
                         <th:block th:if="${user.username} != ${#authentication.name}">
                             <div class="col-12 mt-5">
-                                <form>
+                                <form th:action="@{'/user/' + ${user.username} + '/submit-post'}" method="post">
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <textarea class="form-control" rows="2" placeholder="რას ფიქრობ ჩემზე?"></textarea>
+                                            <textarea class="form-control" name="message" rows="2" placeholder="რას ფიქრობ ჩემზე?"></textarea>
                                         </div>
 
                                         <div class="mt-3 col-md-12 clearfix">
@@ -38,33 +47,39 @@
                             <hr>
                         </th:block>
 
-                        <div class="col-12">
-                            <h3 class="text-primary text-center mt-4">რას ფიქრობს ხალხი ჩემზე</h3>
-                            <div class="timeline mt-5">
-                                <div class="timeline-entry">
-                                    <div class="timeline-stat">
-                                        <div class="timeline-icon">
-                                            <img th:src="@{/assets/images/logo.png}" alt="User">
+                        <div class="col-12" th:with="posts=${user.posts.?[public == true]}">
+                            <h2 class="text-primary text-center mt-4 h4">რას ფიქრობს ხალხი ჩემზე</h2>
+                            <div th:unless="${posts.empty}" class="timeline mt-5">
+                                <th:block th:each="post : ${posts}">
+                                    <div class="timeline-entry">
+                                        <div class="timeline-stat">
+                                            <div class="timeline-icon">
+                                                <img th:src="@{/assets/images/avatar.png}" alt="User">
+                                            </div>
+                                            <div class="timeline-time"
+                                                 th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}">
+                                            </div>
                                         </div>
-                                        <div class="timeline-time">15/04/2020 22:28</div>
-                                    </div>
-                                    <div class="timeline-label">
-                                        <h5 class="text-info">Anonymous</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-entry">
-                                    <div class="timeline-stat">
-                                        <div class="timeline-icon">
-                                            <img th:src="@{/assets/images/logo.png}" alt="User">
+                                        <div class="timeline-label">
+                                            <th:block th:if="${post.isAnonym()}">
+                                                <h5 class="text-danger">ანონიმურად</h5>
+                                            </th:block>
+                                            <th:block th:unless="${post.isAnonym()}">
+                                                <h5 class="text-info">
+                                                    <a th:href="@{'/user/' + ${post.author.username}}"
+                                                       th:text="${post.author.username}"></a>
+                                                </h5>
+                                            </th:block>
+
+                                            <p th:text="${post.text}"></p>
                                         </div>
-                                        <div class="timeline-time">15/04/2020 22:28</div>
                                     </div>
-                                    <div class="timeline-label">
-                                        <h5 class="text-info">Anonymous</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-                                    </div>
-                                </div>
+                                </th:block>
+                            </div>
+                            <div th:if="${posts.empty}" class="mt-5">
+                                <p class="text-muted text-center">
+                                    მომხმარებლის კედელი ცარიელია. გააზიარე თუ რას ფიქრობ მასზე.
+                                </p>
                             </div>
                         </div>
                     </div>

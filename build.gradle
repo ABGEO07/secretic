@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time'
     implementation 'javax.servlet:jstl'
     implementation 'org.flywaydb:flyway-core'
     runtimeOnly 'mysql:mysql-connector-java'

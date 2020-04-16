@@ -1,7 +1,9 @@
 package dev.abgeo.secretic.controller;
 
 import dev.abgeo.secretic.form.UserForm;
+import dev.abgeo.secretic.model.Post;
 import dev.abgeo.secretic.model.User;
+import dev.abgeo.secretic.repository.PostRepository;
 import dev.abgeo.secretic.service.UserService;
 import dev.abgeo.secretic.validator.UserFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
@@ -23,10 +22,13 @@ public class UserController {
 
     private final UserFormValidator userFormValidator;
 
+    private final PostRepository postRepository;
+
     @Autowired
-    public UserController(UserService userService, UserFormValidator userFormValidator) {
+    public UserController(UserService userService, UserFormValidator userFormValidator, PostRepository postRepository) {
         this.userService = userService;
         this.userFormValidator = userFormValidator;
+        this.postRepository = postRepository;
     }
 
     @GetMapping("/user/{username}")
@@ -40,6 +42,30 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @PostMapping("/user/{username}/submit-post")
+    public String submitPost(
+            @PathVariable("username") String username,
+            @RequestParam("message") String message,
+            Model model,
+            Authentication authentication
+    ) {
+        User author = userService.findByUsername(authentication.getName());
+        User destination = userService.findByUsername(username);
+
+        Post post = new Post();
+        post.setAuthor(author);
+        post.setDestination(destination);
+        post.setText(message);
+        post.setAnonym(true);
+        post.setPublic(false);
+
+        postRepository.save(post);
+
+        model.addAttribute("user", destination);
+
+        return "redirect:/user/" + username;
     }
     
     @GetMapping("/edit-profile")

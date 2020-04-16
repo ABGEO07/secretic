@@ -22,6 +22,12 @@ public class User {
     @ManyToMany
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "destination")
+    private Set<Post> posts;
+
+    @OneToMany(mappedBy = "author")
+    private Set<Post> ownedPosts;
+
     public Long getId() {
         return id;
     }
@@ -70,6 +76,14 @@ public class User {
         this.roles = roles;
     }
 
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public Set<Post> getOwnedPosts() {
+        return ownedPosts;
+    }
+
     @Override
     public Object clone() {
         User user = new User();
@@ -82,4 +96,5 @@ public class User {
 
         return user;
     }
+
 }
