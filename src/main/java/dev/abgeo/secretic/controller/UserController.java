@@ -48,6 +48,7 @@ public class UserController {
     public String submitPost(
             @PathVariable("username") String username,
             @RequestParam("message") String message,
+            @RequestParam(name = "anonymly", defaultValue = "off") String anonymly,
             Model model,
             Authentication authentication
     ) {
@@ -58,7 +59,7 @@ public class UserController {
         post.setAuthor(author);
         post.setDestination(destination);
         post.setText(message);
-        post.setAnonym(true);
+        post.setAnonym(anonymly.equals("on"));
         post.setPublic(false);
 
         postRepository.save(post);

@@ -47,7 +47,7 @@
   margin-top: 3px;
   background-color: #ebeef0;
   color: #929292;
-  font-size: .85em;
+  font-size: .70em;
   max-width: 70px
 }
 
@@ -111,6 +111,10 @@
   border-bottom: 9px solid transparent;
   border-right: 9px solid #fff;
   margin: 15px 0 0 -8px
+}
+
+.timeline-text {
+  white-space: pre;
 }
 
 .timeline,

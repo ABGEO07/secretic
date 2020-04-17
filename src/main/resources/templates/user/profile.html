@@ -10,7 +10,6 @@
     <div class="container">
         <div class="row">
             <div class="col-10 ml-auto mr-auto">
-                <h1 class="text-center" ></h1>
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-12 clearfix">
@@ -37,9 +36,17 @@
                                                 <i class="fa fa-envelope mr-2"></i> გაზიარება
                                             </button>
 
-                                            <a class="text-primary" href="#" data-original-title="ემოციის დამატება" data-toggle="tooltip">
-                                                <i class="fa fa-smile-o"></i>
-                                            </a>
+                                            <div class="custom-control pull-right mt-2 mr-3">
+                                                <input type="checkbox" name="anonymly" class="custom-control-input"
+                                                       id="anonymly" checked>
+                                                <label class="custom-control-label" for="anonymly">ანონიმურად</label>
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <a class="text-primary" href="#" data-original-title="ემოციის დამატება" data-toggle="tooltip">
+                                                    <i class="fa fa-smile-o"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -71,7 +78,7 @@
                                                 </h5>
                                             </th:block>
 
-                                            <p th:text="${post.text}"></p>
+                                            <p th:text="${post.text}" class="timeline-text"></p>
                                         </div>
                                     </div>
                                 </th:block>

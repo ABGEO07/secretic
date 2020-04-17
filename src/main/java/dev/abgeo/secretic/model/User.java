@@ -23,9 +23,11 @@ public class User {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "destination")
+    @OrderBy("id DESC")
     private Set<Post> posts;
 
     @OneToMany(mappedBy = "author")
+    @OrderBy("id DESC")
     private Set<Post> ownedPosts;
 
     public Long getId() {
