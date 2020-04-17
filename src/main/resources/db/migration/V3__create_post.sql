@@ -1,8 +1,8 @@
 CREATE TABLE `post`
 (
     `id`             bigint(20) NOT NULL AUTO_INCREMENT,
-    `public`         bit(1)                                   DEFAULT NULL,
-    `anonym`         bit(1)                                   DEFAULT NULL,
+    `public`         bit(1)                                   DEFAULT b'0',
+    `anonym`         bit(1)                                   DEFAULT b'1',
     `created_at`     datetime(6)                              DEFAULT NULL,
     `text`           varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `author_id`      bigint(20)                               DEFAULT NULL,

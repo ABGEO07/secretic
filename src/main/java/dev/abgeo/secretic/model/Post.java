@@ -1,5 +1,6 @@
 package dev.abgeo.secretic.model;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -13,24 +14,29 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
     private User author;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
     private User destination;
 
-    @Column(length=1024)
+    @Column(length = 1024)
     private String text;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @ColumnDefault("true")
     private Boolean anonym;
 
     @Column(name = "public")
+    @ColumnDefault("false")
     private Boolean aPublic;
+
+    @ColumnDefault("false")
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -78,6 +84,14 @@ public class Post {
 
     public void setPublic(Boolean aPublic) {
         this.aPublic = aPublic;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public LocalDateTime getCreatedAt() {

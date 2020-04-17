@@ -4,6 +4,9 @@
 <head>
     <title th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/profile.css}">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,14 +16,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-12 clearfix">
-                            <h1 class="text-center card-title h3"
-                                th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></h1>
-
-                            <a class="btn btn-sm btn-outline-primary btn-edit-profile"
+                            <a class="btn btn-sm btn-outline-primary pull-right"
                                data-original-title="პროფილის რედაქტირება" data-toggle="tooltip"
                                th:if="${user.username} == ${#authentication.name}" th:href="@{/edit-profile}">
                                 <i class="fa fa-edit mt-2 mb-2"></i>
                             </a>
+
+                            <h1 class="text-center card-title h3"
+                                th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></h1>
                         </div>
 
                         <th:block th:if="${user.username} != ${#authentication.name}">
@@ -28,7 +31,8 @@
                                 <form th:action="@{'/user/' + ${user.username} + '/submit-post'}" method="post">
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <textarea class="form-control" name="message" rows="2" placeholder="რას ფიქრობ ჩემზე?"></textarea>
+                                            <textarea class="form-control" name="message" rows="2" required
+                                                      placeholder="რას ფიქრობ ჩემზე?"></textarea>
                                         </div>
 
                                         <div class="mt-3 col-md-12 clearfix">
@@ -54,11 +58,11 @@
                             <hr>
                         </th:block>
 
-                        <div class="col-12" th:with="posts=${user.posts.?[public == true]}">
+                        <div class="col-12" th:with="posts=${user.posts.?[deleted != true]}">
                             <h2 class="text-primary text-center mt-4 h4">რას ფიქრობს ხალხი ჩემზე</h2>
                             <div th:unless="${posts.empty}" class="timeline mt-5">
                                 <th:block th:each="post : ${posts}">
-                                    <div class="timeline-entry">
+                                    <div class="timeline-entry" th:data-id="${post.id}">
                                         <div class="timeline-stat">
                                             <div class="timeline-icon">
                                                 <img th:src="@{/assets/images/avatar.png}" alt="User">
@@ -68,6 +72,21 @@
                                             </div>
                                         </div>
                                         <div class="timeline-label">
+                                            <div class="pull-right" th:if="${user.username} == ${#authentication.name}">
+                                                <a class="text-primary modify-post" th:href="@{'/post/' + ${post.id}}"
+                                                   th:data-value="${post.isPublic()}"
+                                                   th:data-original-title="${post.isPublic() ? 'დამალვა' : 'გასაჯაროება'}"
+                                                   data-toggle="tooltip">
+                                                    <i class="fa"
+                                                       th:classappend="${post.isPublic() ? 'fa-lock' : 'fa-globe'}"></i>
+                                                </a>
+
+                                                <a class="text-danger remove-post" th:href="@{'/post/' + ${post.id}}"
+                                                   data-original-title="წაშლა" data-toggle="tooltip">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </div>
+
                                             <th:block th:if="${post.isAnonym()}">
                                                 <h5 class="text-danger">ანონიმურად</h5>
                                             </th:block>
@@ -95,5 +114,8 @@
         </div>
     </div>
 </div>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/assets/js/profile.js}"></script>
+</th:block>
 </body>
 </html>

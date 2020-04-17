@@ -99,4 +99,9 @@ public class User {
         return user;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj.getClass() == User.class && this.id.equals(((User) obj).getId());
+    }
+
 }
