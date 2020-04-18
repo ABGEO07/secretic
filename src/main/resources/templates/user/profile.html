@@ -58,7 +58,8 @@
                             <hr>
                         </th:block>
 
-                        <div class="col-12" th:with="posts=${user.posts.?[deleted != true]}">
+                        <div class="col-12"
+                             th:with="posts=${user.posts.?[deleted != true && (public == true || author.username == #authentication.name || destination.username == #authentication.name)]}">
                             <h2 class="text-primary text-center mt-4 h4">რას ფიქრობს ხალხი ჩემზე</h2>
                             <div th:unless="${posts.empty}" class="timeline mt-5">
                                 <th:block th:each="post : ${posts}">
