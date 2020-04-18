@@ -26,7 +26,7 @@
                                 th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></h1>
                         </div>
 
-                        <th:block th:if="${user.username} != ${#authentication.name}">
+                        <th:block th:if="${#authorization.expression('isAuthenticated()')} and ${user.username} != ${#authentication.name}">
                             <div class="col-12 mt-5">
                                 <form name="create-post" th:action="@{'/post/' + ${user.username}}" method="post">
                                     <div class="row">

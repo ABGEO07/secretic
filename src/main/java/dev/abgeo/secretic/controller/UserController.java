@@ -22,13 +22,10 @@ public class UserController {
 
     private final UserFormValidator userFormValidator;
 
-    private final PostRepository postRepository;
-
     @Autowired
-    public UserController(UserService userService, UserFormValidator userFormValidator, PostRepository postRepository) {
+    public UserController(UserService userService, UserFormValidator userFormValidator) {
         this.userService = userService;
         this.userFormValidator = userFormValidator;
-        this.postRepository = postRepository;
     }
 
     @GetMapping("/user/{username}")

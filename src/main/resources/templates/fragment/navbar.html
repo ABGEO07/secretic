@@ -28,7 +28,7 @@
                 </div>
             </li>
             <li class="nav-item" th:classappend="${currentUri == '/login'} ? 'active' : null"
-                sec:authorize="!isAuthenticated()">
+                sec:authorize="isAnonymous()">
                 <a class="nav-link" th:href="@{/login}">შესვლა</a>
             </li>
         </ul>
