@@ -32,8 +32,4 @@ public class Role {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
 }

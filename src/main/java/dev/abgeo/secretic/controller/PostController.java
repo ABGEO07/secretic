@@ -26,6 +26,32 @@ public class PostController {
         this.postRepository = postRepository;
     }
 
+    @PostMapping("/post/{username}")
+    @ResponseBody
+    public ResponseEntity<Post> create(
+            @PathVariable("username") String username,
+            @RequestBody Post post,
+            Authentication authentication
+    ) {
+        User author = userService.findByUsername(authentication.getName());
+        User destination = userService.findByUsername(username);
+
+        post.setAuthor(author);
+        post.setDestination(destination);
+
+        postRepository.save(post);
+
+        // TODO: Hack for avoid !errorOutstanding. Find more semantic way.
+        author.setPosts(null);
+        author.setOwnedPosts(null);
+        author.setPassword(null);
+        destination.setPosts(null);
+        destination.setOwnedPosts(null);
+        destination.setPassword(null);
+
+        return ResponseEntity.ok(post);
+    }
+
     @DeleteMapping("/post/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> remove(@PathVariable("id") Long id, Authentication authentication) {
@@ -78,8 +104,12 @@ public class PostController {
         postRepository.save(post);
 
         // TODO: Hack for avoid !errorOutstanding. Find more semantic way.
-        post.setAuthor(null);
-        post.setDestination(null);
+        post.getAuthor().setPosts(null);
+        post.getAuthor().setOwnedPosts(null);
+        post.getAuthor().setPassword(null);
+        post.getDestination().setPosts(null);
+        post.getDestination().setOwnedPosts(null);
+        post.getDestination().setPassword(null);
 
         return ResponseEntity.ok(post);
     }

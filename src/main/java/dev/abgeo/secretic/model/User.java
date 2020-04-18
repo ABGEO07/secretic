@@ -82,8 +82,16 @@ public class User {
         return posts;
     }
 
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
     public Set<Post> getOwnedPosts() {
         return ownedPosts;
+    }
+
+    public void setOwnedPosts(Set<Post> ownedPosts) {
+        this.ownedPosts = ownedPosts;
     }
 
     @Override

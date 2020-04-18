@@ -43,31 +43,6 @@ public class UserController {
 
         return "user/profile";
     }
-
-    @PostMapping("/user/{username}/submit-post")
-    public String submitPost(
-            @PathVariable("username") String username,
-            @RequestParam("message") String message,
-            @RequestParam(name = "anonymly", defaultValue = "off") String anonymly,
-            Model model,
-            Authentication authentication
-    ) {
-        User author = userService.findByUsername(authentication.getName());
-        User destination = userService.findByUsername(username);
-
-        Post post = new Post();
-        post.setAuthor(author);
-        post.setDestination(destination);
-        post.setText(message);
-        post.setAnonym(anonymly.equals("on"));
-        post.setPublic(false);
-
-        postRepository.save(post);
-
-        model.addAttribute("user", destination);
-
-        return "redirect:/user/" + username;
-    }
     
     @GetMapping("/edit-profile")
     public String editProfile(Model model, UserForm userForm, Authentication authentication) {
