@@ -2,7 +2,7 @@
 <html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></title>
+    <title th:text="${(null == user.firstName || user.firstName.isEmpty()) && (null == user.lastName || user.lastName.isEmpty()) ? user.username : user.firstName + ' ' + user.lastName}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/profile.css}">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -23,7 +23,7 @@
                             </a>
 
                             <h1 class="text-center card-title h3"
-                                th:text="${user.firstName + ' ' + user.lastName + ' ' + user.username}"></h1>
+                                th:text="${(null == user.firstName || user.firstName.isEmpty()) && (null == user.lastName || user.lastName.isEmpty()) ? user.username : user.firstName + ' ' + user.lastName}"></h1>
                         </div>
 
                         <th:block th:if="${#authorization.expression('isAuthenticated()')} and ${user.username} != ${#authentication.name}">
