@@ -1,4 +1,4 @@
-package dev.abgeo.secretic;
+package dev.abgeo.secretic.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

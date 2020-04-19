@@ -1,5 +1,6 @@
 package dev.abgeo.secretic.model;
 
+import dev.abgeo.secretic.eventListener.PostListener;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "post")
+@EntityListeners(PostListener.class)
 public class Post {
 
     @Id

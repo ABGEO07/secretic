@@ -1,9 +1,7 @@
 package dev.abgeo.secretic.controller;
 
 import dev.abgeo.secretic.form.UserForm;
-import dev.abgeo.secretic.model.Post;
 import dev.abgeo.secretic.model.User;
-import dev.abgeo.secretic.repository.PostRepository;
 import dev.abgeo.secretic.service.UserService;
 import dev.abgeo.secretic.validator.UserFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
