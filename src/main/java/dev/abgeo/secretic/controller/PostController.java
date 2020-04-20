@@ -41,14 +41,6 @@ public class PostController {
 
         postRepository.save(post);
 
-        // TODO: Hack for avoid !errorOutstanding. Find more semantic way.
-        author.setPosts(null);
-        author.setOwnedPosts(null);
-        author.setPassword(null);
-        destination.setPosts(null);
-        destination.setOwnedPosts(null);
-        destination.setPassword(null);
-
         return ResponseEntity.ok(post);
     }
 
@@ -102,14 +94,6 @@ public class PostController {
 
         post.setPublic(aPublic);
         postRepository.save(post);
-
-        // TODO: Hack for avoid !errorOutstanding. Find more semantic way.
-        post.getAuthor().setPosts(null);
-        post.getAuthor().setOwnedPosts(null);
-        post.getAuthor().setPassword(null);
-        post.getDestination().setPosts(null);
-        post.getDestination().setOwnedPosts(null);
-        post.getDestination().setPassword(null);
 
         return ResponseEntity.ok(post);
     }

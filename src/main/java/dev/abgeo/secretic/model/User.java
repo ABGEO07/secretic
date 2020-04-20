@@ -1,10 +1,14 @@
 package dev.abgeo.secretic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -17,6 +21,7 @@ public class User {
 
     private String lastName;
 
+    @JsonIgnore
     private String password;
 
     @ManyToMany
@@ -24,10 +29,12 @@ public class User {
 
     @OneToMany(mappedBy = "destination")
     @OrderBy("id DESC")
+    @JsonIgnore
     private Set<Post> posts;
 
     @OneToMany(mappedBy = "author")
     @OrderBy("id DESC")
+    @JsonIgnore
     private Set<Post> ownedPosts;
 
     public Long getId() {
@@ -82,16 +89,8 @@ public class User {
         return posts;
     }
 
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
     public Set<Post> getOwnedPosts() {
         return ownedPosts;
-    }
-
-    public void setOwnedPosts(Set<Post> ownedPosts) {
-        this.ownedPosts = ownedPosts;
     }
 
     @Override
