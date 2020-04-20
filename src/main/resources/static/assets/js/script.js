@@ -10,5 +10,21 @@
 
         $('[data-toggle="popover"]').popover();
         $('[data-toggle="tooltip"]').tooltip();
+
+        const stompClient = getStomp();
+        subscribeNotifications(stompClient);
     });
 })(jQuery);
+
+/**
+ * Connect to socket and get STOMP client instance.
+ *
+ * @param endpoint Socket endpoint for connect to.
+ *
+ * @returns {*}
+ */
+function getStomp(endpoint = '/secretic-socket') {
+    const socket = new SockJS(endpoint);
+
+    return Stomp.over(socket);
+}
