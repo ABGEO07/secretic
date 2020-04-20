@@ -8,8 +8,8 @@
     <meta name="description" content="Anonymous messaging system">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
-    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/font-awesome.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/shards.min.css}">
     <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 </head>
@@ -19,18 +19,18 @@
         <p>Navbar Contents</p>
     </nav>
     <div class="content clearfix" layout:fragment="content">
-        <p>Body contents</p>
+        <p>Body Contents</p>
     </div>
     <footer th:replace="fragment/footer :: footer">
         <p>Footer Contents</p>
     </footer>
 </div>
 
-<script th:src="@{/assets/js/jquery-3.2.1.min.js}"></script>
-<script th:src="@{/assets/js/popper.min.js}"></script>
-<script th:src="@{/assets/js/sockjs.min.js}"></script>
-<script th:src="@{/assets/js/stomp.min.js}"></script>
-<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+<script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/assets/js/shards.min.js}"></script>
 <script th:src="@{/assets/js/notification.js}"></script>
 <script th:src="@{/assets/js/script.js}"></script>
