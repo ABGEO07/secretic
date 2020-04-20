@@ -33,7 +33,7 @@
             </li>
         </ul>
         <ul class="navbar-nav">
-            <li th:replace="fragment/notifications :: navbar-dropdown"></li>
+            <li sec:authorize="isAuthenticated()" th:replace="fragment/notifications :: navbar-dropdown"></li>
             <li class="nav-item">
                 <a class="nav-link" href="https://github.com/ABGEO07/secretic" target="_blank">
                     <i class="fa fa-github"></i>

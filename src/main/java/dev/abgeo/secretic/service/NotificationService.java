@@ -16,10 +16,8 @@ public class NotificationService {
     }
 
     public void notify(Notification notification) {
-        String username =  notification.getUser().getUsername();
-        notification.setUser(null);
         messagingTemplate.convertAndSendToUser(
-                username,
+                notification.getUser().getUsername(),
                 "/topic/notification",
                 notification
         );

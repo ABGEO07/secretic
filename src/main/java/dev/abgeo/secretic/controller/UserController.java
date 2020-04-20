@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/edit-profile")
-    public String EditProfile(
+    public String editProfile(
             @ModelAttribute("userForm") UserForm userForm,
             Model model,
             BindingResult bindingResult,
@@ -84,6 +84,11 @@ public class UserController {
         }
 
         return "user/edit-profile";
+    }
+
+    @GetMapping("/notifications")
+    public String notifications() {
+        return "user/notifications";
     }
 
 }

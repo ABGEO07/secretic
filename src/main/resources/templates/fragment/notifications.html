@@ -6,27 +6,53 @@
         <a class="nav-link" href="#" id="navbarNotifications" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-bell"></i>
-            <span class="badge badge-secondary notifications-counter">0</span>
+            <span class="badge badge-secondary notifications-counter" th:text="${notifications.?[isSeen() != true].size()}">0</span>
         </a>
         <div class="dropdown-menu notification-dropdown" aria-labelledby="navbarNotifications">
             <div class="notifications-head text-light bg-secondary">
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 col-12">
-                        <span>შეტყობინებები (<span class="notifications-counter">0</span>)</span>
+                        <span>
+                            შეტყობინებები
+                            (<span class="notifications-counter"
+                                   th:text="${notifications.?[isSeen() != true].size()}">0</span>)
+                        </span>
                         <a href="#" class="float-right text-light">ყველას წაკითხულად მონიშვნა</a>
                     </div>
                 </div>
             </div>
 
-            <div class="notifications-container empty">
-                <p class="text-center text-muted mt-4">თქვენ არ გაქვთ ნოტიფიკაციები</p>
+            <div class="notifications-container" th:classappend="${notifications.empty ? 'empty' : ''}">
+                <th:block th:insert="fragment/notifications :: notifications(false)" />
             </div>
 
             <div class="notifications-footer bg-secondary text-center">
-                <a href="#" class="text-light">ყველა შეტყობინება</a>
+                <a th:href="@{/notifications}" class="text-light">ყველა შეტყობინება</a>
             </div>
         </div>
     </li>
 </ul>
+
+<th:block th:fragment="notifications(showAll)">
+    <p class="text-center text-muted mt-4" th:if="${notifications.empty}">
+        თქვენ არ გაქვთ შეტყობინებები
+    </p>
+    <th:block th:unles="${notifications.empty}" th:each="notification, iterStat : ${notifications}"
+              th:if="${showAll || (iterStat.index < 5)}">
+        <a class="dropdown-item notification-dropdown-item"
+           th:classappend="${notification.isSeen()} ? '' : 'notification-unread'" href="#">
+            <div class="notifications-body">
+                <p class="notification-title text-info" th:text="${notification.title}"></p>
+                <p class="notification-text" th:text="${notification.message}"></p>
+                <p class="notification-date text-muted">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span th:text="${#temporals.format(notification.createdAt, 'dd/MM/yyyy HH:mm')}"
+                          th:remove="tag"></span>
+                </p>
+            </div>
+        </a>
+    </th:block>
+</th:block>
+
 </body>
 </html>

@@ -37,6 +37,11 @@ public class User {
     @JsonIgnore
     private Set<Post> ownedPosts;
 
+    @OneToMany(mappedBy = "user")
+    @OrderBy("id DESC")
+    @JsonIgnore
+    private Set<Notification> notifications;
+
     public Long getId() {
         return id;
     }
@@ -91,6 +96,10 @@ public class User {
 
     public Set<Post> getOwnedPosts() {
         return ownedPosts;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
     }
 
     @Override

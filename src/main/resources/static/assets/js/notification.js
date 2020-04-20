@@ -23,23 +23,37 @@ function addNavbarNotification(notification) {
 
     notificationsCounter.html(notificationsCounter.html() - 1 + 2);
 
+    // Fucking JS :(
+    let createdAt = new Date(notification.createdAt);
+    createdAt = `${
+        (createdAt.getMonth()+1).toString().padStart(2, '0')}/${
+        createdAt.getDate().toString().padStart(2, '0')}/${
+        createdAt.getFullYear().toString().padStart(4, '0')} ${
+        createdAt.getHours().toString().padStart(2, '0')}:${
+        createdAt.getMinutes().toString().padStart(2, '0')}`;
+
     let notificationElement = $(`
         <a class="dropdown-item notification-dropdown-item" href="#">
             <div class="notifications-body">
-                <p class="notification-title text-info">ახალი შეტყობინება</p>
+                <p class="notification-title text-info">${notification.title}</p>
                 <p class="notification-text">${notification.message}</p>
                 <p class="notification-date text-muted">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> 17/04/2020 23:44
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> ${createdAt}
                 </p>
             </div>
         </a>
     `);
 
-    notificationElement.addClass('notification-unread');
+    if (true !== notification.seen) {
+        notificationElement.addClass('notification-unread');
+    }
 
     if (notificationsContainer.hasClass('empty')) {
-        notificationsContainer.html(notificationElement);
-    } else {
-        notificationsContainer.prepend(notificationElement);
+        notificationsContainer.removeClass('empty');
+        notificationsContainer.html(null);
+    } else if (5 <= notificationsContainer.children().length) {
+        notificationsContainer.children().last().remove();
     }
+
+    notificationsContainer.prepend(notificationElement);
 }

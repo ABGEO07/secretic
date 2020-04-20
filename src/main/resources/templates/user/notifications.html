@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>შეტყობინებები</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-10 ml-auto mr-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center card-title">შეტყობინებები</h3>
+                        <th:block th:insert="fragment/notifications :: notifications(true)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -76,10 +76,10 @@
                                             <div class="pull-right" th:if="${user.username} == ${#authentication.name}">
                                                 <a class="text-primary modify-post" th:href="@{'/post/' + ${post.id}}"
                                                    th:data-value="${post.isPublic()}"
-                                                   th:data-original-title="${post.isPublic() ? 'დამალვა' : 'გასაჯაროება'}"
+                                                   th:data-original-title="${post.isPublic()} ? 'დამალვა' : 'გასაჯაროება'"
                                                    data-toggle="tooltip">
                                                     <i class="fa"
-                                                       th:classappend="${post.isPublic() ? 'fa-lock' : 'fa-globe'}"></i>
+                                                       th:classappend="${post.isPublic()} ? 'fa-lock' : 'fa-globe'"></i>
                                                 </a>
 
                                                 <a class="text-danger remove-post" th:href="@{'/post/' + ${post.id}}"
